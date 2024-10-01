@@ -37,10 +37,11 @@ class Avalanche extends AES
      */
     static String intArrayToBinString(int[][] data,int col)
     {
-        
-        /* To be completed */
-        
-        return "";  // here to please the compiler in the code handout
+        String output = "";
+        for (int i = 0; i < 4; i++) {
+            output += leftPad(Integer.toBinaryString(data[i][col]));
+        }
+        return output;  
     }// intArrayToBinString method
 
     /* Given a round number and two AES state arrays, send to the standard
