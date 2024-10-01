@@ -110,14 +110,17 @@ Round 00 00001110001101100011010010101110 11001110011100100010010110110110
      */
     static void testEffect(String keyStr, String block1, String block2)
     {
-        int[][] s1 = encrypt(keyStr, block1, 0);
-        int[][] s2 = encrypt(keyStr, block2, 0);
-        printRound(0, s1, s2);
+        for (int i = 0; i < 11; i++) {
+            int[][] s1 = encrypt(keyStr, block1, i);
+            int[][] s2 = encrypt(keyStr, block2, i);
+            printRound(i, s1, s2);
+        }
+        
         
     }// testEffect method
 
     protected static int[][] encrypt(String block, String keyStr, int round) {
-        round++; //REMOVE FOR SUBMISSION?!?!?!?!?!?!
+        round++; //REMOVE FOR SUBMISSION?!?!?!?!?!?! and change nummber for each addRoundKey rounds
         int[][] m = hexStringToByteArray(block);
         int[] w = expandKey(hexStringToByteArray(keyStr));
 
