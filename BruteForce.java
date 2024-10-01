@@ -13,14 +13,18 @@ class BruteForce extends DoubleAES
      * input: "01101110"           output: "6e"
      * Note: you can assume that the length of the input is a multiple of 4.
      */
-    static String binStringToHex(String bits)
-    {
-        
-        /* To be completed */
-
-        return "";  // here to please the compiler in the code handout
-
-    }// binStringToHex method
+    static String binStringToHex(String bits) {
+        System.out.println(bits);
+        StringBuilder hex = new StringBuilder();
+        for (int i = 0; i < bits.length(); i += 4) {
+            String binaryChunk = bits.substring(i, Math.min(i + 4, bits.length()));
+            int decimal = Integer.parseInt(binaryChunk, 2);
+            hex.append(Integer.toHexString(decimal));
+        }
+        return hex.toString();
+    }
+    
+    
 
     /* Given two plaintext-ciphertext pairs and the number numBits of
      * significant bits in each key, perform a brute-force search of
@@ -31,15 +35,39 @@ class BruteForce extends DoubleAES
      * method sends to the standard output steam some output whose format is
      * specified in the handout.
     */
-    static void bruteForce(String plaintext1, String ciphertext1, 
-                           String plaintext2, String ciphertext2, int numBits) 
-    {
-        long startTime, elapsedTime;
-        startTime = System.currentTimeMillis();
+    static void bruteForce(String plaintext1, String ciphertext1, String plaintext2, String ciphertext2, int numBits) {
+        int maxKey = (int) Math.pow(2, numBits);
+    
+        for (int key1 = 0; key1 < maxKey; key1++) {
+            for (int key2 = 0; key2 < maxKey; key2++) {
+                String key1Hex = String.format("%" + numBits + "s", Integer.toBinaryString(key1)).replaceAll(" ", "0");
+                String key2Hex = String.format("%" + numBits + "s", Integer.toBinaryString(key2)).replaceAll(" ", "0");
+    
+                while (key1Hex.length() % 4 != 0) key1Hex = "0" + key1Hex;
+                while (key2Hex.length() % 4 != 0) key2Hex = "0" + key2Hex;
+    
+                // Ensure that we are dealing with at least 4 bits before conversion
+                if (key1Hex.length() < 4 || key2Hex.length() < 4) {
+                    continue;
+                }
+    
+                System.out.println("Converting first key to hex");
+                key1Hex = binStringToHex(key1Hex);
+                System.out.println("Converting second key to hex");
+                key2Hex = binStringToHex(key2Hex);
+    
+                String encrypted1 = stateToString(encryptDAES(key1Hex, key2Hex, plaintext1));
+                String encrypted2 = stateToString(encryptDAES(key1Hex, key2Hex, plaintext2));
+    
+                if (encrypted1.equals(ciphertext1) && encrypted2.equals(ciphertext2)) {
+                    return;
+                }
+            }
+        }
+    }
+    
+    
 
-        /* To be completed */
-
-    }// bruteForce method
 
     /* Given a test number and a number of bits, this method returns an
        array of two keys, each of which is numBits long and has a specific
