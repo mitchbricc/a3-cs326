@@ -58,28 +58,47 @@ Round 00 00001110001101100011010010101110 11001110011100100010010110110110
      */
     static void printRound(int num, int[][] s1, int[][] s2)
     {
-        System.out.printf("Round %02d ", num);
-        System.out.print(intArrayToBinString(s1,0));
-        System.out.print(" ");
-        System.out.print(intArrayToBinString(s1,1));
-        System.out.print(String.format("\n%9s", ""));
-
-        System.out.print(intArrayToBinString(s2,0));
-        System.out.print(" ");
-        System.out.print(intArrayToBinString(s2,1));
-
-        System.out.printf("\n%17s","*");
-        System.out.print(String.format("\n%9s", ""));
-
-        System.out.print(intArrayToBinString(s1,2));
-        System.out.print(" ");
-        System.out.print(intArrayToBinString(s1,3));
-        System.out.print(String.format("\n%9s", ""));
         
-        System.out.print(intArrayToBinString(s2,2));
-        System.out.print(" ");
-        System.out.print(intArrayToBinString(s2,3));
-        System.out.println("\n");
+
+        String l1 = intArrayToBinString(s1,0) + " " + intArrayToBinString(s1,1);
+        System.out.printf("Round %02d ", num);
+        System.out.print(l1);
+        System.out.print(String.format("\n%9s", ""));
+
+        String l2 = intArrayToBinString(s2,0) + " " + intArrayToBinString(s2,1);
+        System.out.print(l2);
+        System.out.print(String.format("\n%9s", ""));
+
+        int differences = 0;
+        for (int i = 0; i < l1.length(); i++) {
+            if(l1.charAt(i) != l2.charAt(i)){
+                System.out.print("*");
+                differences++;
+            }
+            else {
+                System.out.print(" ");
+            }
+        }
+        System.out.print(String.format("\n%9s", ""));
+
+        String l3 = intArrayToBinString(s1,2) + " " + intArrayToBinString(s1,3);
+        System.out.print(l3);
+        System.out.print(String.format("\n%9s", ""));
+
+        String l4 = intArrayToBinString(s2,2) + " " + intArrayToBinString(s2,3);
+        System.out.print(l4);
+        System.out.print(String.format("\n%9s", ""));
+
+        for (int i = 0; i < l3.length(); i++) {
+            if(l3.charAt(i) != l4.charAt(i)){
+                System.out.print("*");
+                differences++;
+            }
+            else {
+                System.out.print(" ");
+            }
+        }
+        System.out.println(String.format("%4s", Integer.toString(differences)));
     }// printRound method
 
     /* Given a 128-bit AES key (as a 32-digit hexadecimal number) and two
@@ -91,10 +110,33 @@ Round 00 00001110001101100011010010101110 11001110011100100010010110110110
      */
     static void testEffect(String keyStr, String block1, String block2)
     {
-
-        /* To be completed */
+        int[][] s1 = encrypt(keyStr, block1, 0);
+        int[][] s2 = encrypt(keyStr, block2, 0);
+        printRound(0, s1, s2);
         
     }// testEffect method
+
+    protected static int[][] encrypt(String block, String keyStr, int round) {
+        round++; //REMOVE FOR SUBMISSION?!?!?!?!?!?!
+        int[][] m = hexStringToByteArray(block);
+        int[] w = expandKey(hexStringToByteArray(keyStr));
+
+        addRoundKey(m, w, 1);
+        for (int i = 2; i <= round; i++) {
+            forwardSubstituteBytes(m);
+            shiftRows(m);
+            mixColumns(m);
+            addRoundKey(m, w, i);
+        }
+        if(round == 11){
+            forwardSubstituteBytes(m);
+            shiftRows(m);
+            addRoundKey(m, w, 11);
+        }
+        
+
+        return m; 
+    }
 
     /* This method will be used for testing. 
      * Do NOT modify it. 
