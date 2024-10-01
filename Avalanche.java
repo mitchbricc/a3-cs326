@@ -58,9 +58,28 @@ Round 00 00001110001101100011010010101110 11001110011100100010010110110110
      */
     static void printRound(int num, int[][] s1, int[][] s2)
     {
+        System.out.printf("Round %02d ", num);
+        System.out.print(intArrayToBinString(s1,0));
+        System.out.print(" ");
+        System.out.print(intArrayToBinString(s1,1));
+        System.out.print(String.format("\n%9s", ""));
+
+        System.out.print(intArrayToBinString(s2,0));
+        System.out.print(" ");
+        System.out.print(intArrayToBinString(s2,1));
+
+        System.out.printf("\n%17s","*");
+        System.out.print(String.format("\n%9s", ""));
+
+        System.out.print(intArrayToBinString(s1,2));
+        System.out.print(" ");
+        System.out.print(intArrayToBinString(s1,3));
+        System.out.print(String.format("\n%9s", ""));
         
-        /* To be completed */
-        
+        System.out.print(intArrayToBinString(s2,2));
+        System.out.print(" ");
+        System.out.print(intArrayToBinString(s2,3));
+        System.out.println("\n");
     }// printRound method
 
     /* Given a 128-bit AES key (as a 32-digit hexadecimal number) and two
@@ -82,7 +101,6 @@ Round 00 00001110001101100011010010101110 11001110011100100010010110110110
      */
     public static void main(String[] args)
     {
-        
         if (args.length == 0)
         {
             System.out.println( leftPad("") );
