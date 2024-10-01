@@ -21,11 +21,7 @@ class Avalanche extends AES
      */
     static String leftPad(String s)
     {
-        
-        /* To be completed */
-        
-        return "";  // here to please the compiler in the code handout
-
+        return String.format("%8s", s).replace(' ', '0'); 
     }// leftPad method
     
     /* given an AES state array and a column number, return the string
@@ -85,6 +81,7 @@ Round 00 00001110001101100011010010101110 11001110011100100010010110110110
      */
     public static void main(String[] args)
     {
+        
         if (args.length == 0)
         {
             System.out.println( leftPad("") );
