@@ -120,26 +120,22 @@ Round 00 00001110001101100011010010101110 11001110011100100010010110110110
     }// testEffect method
 
     protected static int[][] encrypt(String block, String keyStr, int round) {
-        round++; //REMOVE FOR SUBMISSION?!?!?!?!?!?! and change nummber for each addRoundKey rounds
         int[][] m = hexStringToByteArray(block);
         int[] w = expandKey(hexStringToByteArray(keyStr));
-
-        
-        if(round <11){
-            addRoundKey(m, w, 1);//change to 0 for submission
-            for (int i = 2; i <= round; i++) { //change to i to start at 1
+        for (int i = 0; i <= round; i++) { 
+            if(i == 0){
+                addRoundKey(m, w, 0);
+            }
+            else if(i == 10){
+                forwardSubstituteBytes(m);
+                shiftRows(m);
+                addRoundKey(m, w, i);
+            }
+            else{
                 forwardSubstituteBytes(m);
                 shiftRows(m);
                 mixColumns(m);
                 addRoundKey(m, w, i);
-            }
-        }
-        else {
-            m = encrypt(block, keyStr, 9);
-            if(round == 11){
-                forwardSubstituteBytes(m);
-                shiftRows(m);
-                addRoundKey(m, w, 11);
             }
         }
         
