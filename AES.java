@@ -309,13 +309,13 @@
       */
      protected static void addRoundKey(int[][] state, int[] w, int round) {
          byte[] temp = new byte[w.length * 4];
-         for (int i = (round-1) * 4; i < (round-1) * 4 + 4; i++) {
+         for (int i = (round) * 4; i < (round) * 4 + 4; i++) {
              temp[i * 4] = (byte) ((w[i] >> 24)&0xff);
              temp[i * 4 + 1] = (byte) ((w[i] >> 16)&0xff);
              temp[i * 4 + 2] = (byte) ((w[i] >> 8)&0xff);
              temp[i * 4 + 3] = (byte) (w[i]&0xff);
          }
-         for (int i = (round-1) * 16; i < (round-1) * 16 + 16; i++) {
+         for (int i = (round) * 16; i < (round) * 16 + 16; i++) {
              state[(i%16) % 4][(i%16) / 4] ^= temp[i] &0xff;
          }
      }// addRoundKey method
@@ -328,7 +328,7 @@
       */
      protected static void inverseAddRoundKey(int[][] state, int[] w, 
      int round) {
-         addRoundKey(state, w, 12-round);
+         addRoundKey(state, w, 10-round);
      }// inverseAddRoundKey method
  
      /*
@@ -399,8 +399,8 @@
          int[][] m = hexStringToByteArray(block);
          int[] w = expandKey(hexStringToByteArray(keyStr));
  
-         addRoundKey(m, w, 1);
-         for (int i = 2; i < 11; i++) {
+         addRoundKey(m, w, 0);
+         for (int i = 2; i < 10; i++) {
              forwardSubstituteBytes(m);
              shiftRows(m);
              mixColumns(m);
@@ -408,7 +408,7 @@
          }
          forwardSubstituteBytes(m);
          shiftRows(m);
-         addRoundKey(m, w, 11);
+         addRoundKey(m, w, 10);
  
          return m; 
      }// encrypt method
