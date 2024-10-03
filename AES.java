@@ -400,7 +400,7 @@
          int[] w = expandKey(hexStringToByteArray(keyStr));
  
          addRoundKey(m, w, 0);
-         for (int i = 2; i < 10; i++) {
+         for (int i = 1; i < 10; i++) {
              forwardSubstituteBytes(m);
              shiftRows(m);
              mixColumns(m);
@@ -424,8 +424,8 @@
          int[][] m = hexStringToByteArray(block);
          int[] w = expandKey(hexStringToByteArray(keyStr));
          
-         inverseAddRoundKey(m, w, 1);
-         for (int i = 2; i < 11; i++) {
+         inverseAddRoundKey(m, w, 0);
+         for (int i = 1; i < 10; i++) {
              inverseShiftRows(m);
              inverseSubstituteBytes(m);
              inverseAddRoundKey(m, w, i);
@@ -433,7 +433,7 @@
          }
          inverseShiftRows(m);
          inverseSubstituteBytes(m);
-         inverseAddRoundKey(m, w, 11);
+         inverseAddRoundKey(m, w, 10);
  
          return m; 
      }// decrypt method
