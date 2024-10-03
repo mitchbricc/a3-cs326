@@ -111,8 +111,8 @@ Round 00 00001110001101100011010010101110 11001110011100100010010110110110
     static void testEffect(String keyStr, String block1, String block2)
     {
         for (int i = 0; i < 11; i++) {
-            int[][] s1 = encrypt(keyStr, block1, i);
-            int[][] s2 = encrypt(keyStr, block2, i);
+            int[][] s1 = encrypt(block1, keyStr, i);
+            int[][] s2 = encrypt(block2, keyStr, i);
             printRound(i, s1, s2);
         }
         
