@@ -14,6 +14,8 @@ class BruteForce extends DoubleAES
      * Note: you can assume that the length of the input is a multiple of 4.
      */
     static String binStringToHex(String bits) {
+        bits = String.format("%32s", bits).replaceAll(" ", "0");
+    
         StringBuilder hex = new StringBuilder();
         for (int i = 0; i < bits.length(); i += 4) {
             String binaryChunk = bits.substring(i, Math.min(i + 4, bits.length()));
@@ -53,7 +55,7 @@ class BruteForce extends DoubleAES
                     System.out.printf("%13s", "");
                     System.out.println(key1Hex + " " + key2Hex + " " + " time = " + (elapsedTime/1000.0) + "s");
                     return;
-                }
+                } 
             }
         }
     }
