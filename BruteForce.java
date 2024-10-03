@@ -14,7 +14,8 @@ class BruteForce extends DoubleAES
      * Note: you can assume that the length of the input is a multiple of 4.
      */
     static String binStringToHex(String bits) {
-        bits = String.format("%32s", bits).replaceAll(" ", "0");
+        int pad = (4 - bits.length() % 4) % 4;
+        bits = "0".repeat(pad) + bits;
     
         StringBuilder hex = new StringBuilder();
         for (int i = 0; i < bits.length(); i += 4) {
