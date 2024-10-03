@@ -111,8 +111,8 @@ Round 00 00001110001101100011010010101110 11001110011100100010010110110110
     static void testEffect(String keyStr, String block1, String block2)
     {
         for (int i = 0; i < 11; i++) {
-            int[][] s1 = encrypt(keyStr, block1, i);
-            int[][] s2 = encrypt(keyStr, block2, i);
+            int[][] s1 = encrypt(block1, keyStr,  i);
+            int[][] s2 = encrypt(block2, keyStr,  i);
             printRound(i, s1, s2);
         }
         
@@ -124,20 +124,25 @@ Round 00 00001110001101100011010010101110 11001110011100100010010110110110
         int[][] m = hexStringToByteArray(block);
         int[] w = expandKey(hexStringToByteArray(keyStr));
 
-        addRoundKey(m, w, 1);
-        for (int i = 2; i <= round; i++) {
-            forwardSubstituteBytes(m);
-            shiftRows(m);
-            mixColumns(m);
-            addRoundKey(m, w, i);
+        
+        if(round <11){
+            addRoundKey(m, w, 1);//change to 0 for submission
+            for (int i = 2; i <= round; i++) { //change to i to start at 1
+                forwardSubstituteBytes(m);
+                shiftRows(m);
+                mixColumns(m);
+                addRoundKey(m, w, i);
+            }
         }
-        if(round == 11){
-            forwardSubstituteBytes(m);
-            shiftRows(m);
-            addRoundKey(m, w, 11);
+        else {
+            m = encrypt(block, keyStr, 9);
+            if(round == 11){
+                forwardSubstituteBytes(m);
+                shiftRows(m);
+                addRoundKey(m, w, 11);
+            }
         }
         
-
         return m; 
     }
 
