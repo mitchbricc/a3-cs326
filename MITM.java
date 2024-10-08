@@ -27,8 +27,27 @@ class MITM extends BruteForce
         long startTime, elapsedTime;
         startTime = System.currentTimeMillis();
 
-        /* To be completed */
+        int maxKey = (int) Math.pow(2, numBits);
+        
 
+
+
+
+
+
+
+        
+        HashMap<String,Integer> cPrimeMap1 = new HashMap<>();
+        HashMap<String,Integer> cPrimeMap2 = new HashMap<>();
+        for (int decryptKey = 0; decryptKey < maxKey; decryptKey++) {
+            String keyHex1 = String.format("%32s", binStringToHex(Integer.toBinaryString(decryptKey))).replaceAll(" ", "0");
+            String cPrime1 = Avalanche.intArrayToBinString(AES.decrypt(ciphertext1, keyHex1), decryptKey);
+            cPrimeMap1.put(cPrime1, decryptKey);
+
+            String keyHex2 = String.format("%32s", binStringToHex(Integer.toBinaryString(decryptKey))).replaceAll(" ", "0");
+            String cPrime2 = Avalanche.intArrayToBinString(AES.decrypt(ciphertext2, keyHex2), decryptKey);
+            cPrimeMap2.put(cPrime2, decryptKey);
+        }
     }// meetInTheMiddle method
     
     /* This code is used for testing purposes.  This driver code
