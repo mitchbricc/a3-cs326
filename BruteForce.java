@@ -19,7 +19,8 @@ class BruteForce extends DoubleAES
     
         StringBuilder hex = new StringBuilder();
         for (int i = 0; i < bits.length(); i += 4) {
-            String binaryChunk = bits.substring(i, Math.min(i + 4, bits.length()));
+            String binaryChunk = bits.substring(i, 
+            Math.min(i + 4, bits.length()));
             int decimal = Integer.parseInt(binaryChunk, 2);
             hex.append(Integer.toHexString(decimal));
         }
@@ -45,17 +46,25 @@ class BruteForce extends DoubleAES
     
         for (int key1 = 0; key1 < maxKey; key1++) {
             for (int key2 = 0; key2 < maxKey; key2++) {
-                String key1Hex = String.format("%32s", binStringToHex(Integer.toBinaryString(key1))).replaceAll(" ", "0");
-                String key2Hex = String.format("%32s", binStringToHex(Integer.toBinaryString(key2))).replaceAll(" ", "0");
+                String key1Hex = String.format("%32s", 
+                    binStringToHex(Integer.toBinaryString(key1)))
+                        .replaceAll(" ", "0");
+                String key2Hex = String.format("%32s", 
+                    binStringToHex(Integer.toBinaryString(key2)))
+                        .replaceAll(" ", "0");
     
-                String encrypted1 = stateToString(encryptDAES(key1Hex, key2Hex, plaintext1));
-                String encrypted2 = stateToString(encryptDAES(key1Hex, key2Hex, plaintext2));
+                String encrypted1 = stateToString(
+                    encryptDAES(key1Hex, key2Hex, plaintext1));
+                String encrypted2 = stateToString(
+                    encryptDAES(key1Hex, key2Hex, plaintext2));
     
-                if (encrypted1.equals(ciphertext1) && encrypted2.equals(ciphertext2)) {
-                    elapsedTime = System.currentTimeMillis() - startTime;
-                    System.out.printf("%13s", "");
-                    System.out.println(key1Hex + " " + key2Hex + " " + " time = " + (elapsedTime/1000.0) + "s");
-                    return;
+                if (encrypted1.equals(ciphertext1) 
+                    && encrypted2.equals(ciphertext2)) {
+                        elapsedTime = System.currentTimeMillis() - startTime;
+                        System.out.printf("%13s", "");
+                        System.out.println(key1Hex + " " + key2Hex + " " + 
+                            " time = " + (elapsedTime/1000.0) + "s");
+                        return;
                 } 
             }
         }

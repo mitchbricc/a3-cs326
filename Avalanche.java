@@ -58,8 +58,6 @@ Round 00 00001110001101100011010010101110 11001110011100100010010110110110
      */
     static void printRound(int num, int[][] s1, int[][] s2)
     {
-        
-
         String l1 = intArrayToBinString(s1,0) + " " + intArrayToBinString(s1,1);
         System.out.printf("Round %02d ", num);
         System.out.print(l1);
