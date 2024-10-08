@@ -36,19 +36,21 @@ class MITM extends BruteForce
 
 
 
-        
+
         HashMap<String,Integer> cPrimeMap1 = new HashMap<>();
         HashMap<String,Integer> cPrimeMap2 = new HashMap<>();
         for (int decryptKey = 0; decryptKey < maxKey; decryptKey++) {
-            String keyHex1 = String.format("%32s", binStringToHex(Integer.toBinaryString(decryptKey))).replaceAll(" ", "0");
-            String cPrime1 = Avalanche.intArrayToBinString(AES.decrypt(ciphertext1, keyHex1), decryptKey);
+            String keyHex = String.format("%32s", binStringToHex(Integer.toBinaryString(decryptKey))).replaceAll(" ", "0");
+            
+            String cPrime1 = DoubleAES.stateToString(AES.decrypt(ciphertext1, keyHex));
             cPrimeMap1.put(cPrime1, decryptKey);
 
-            String keyHex2 = String.format("%32s", binStringToHex(Integer.toBinaryString(decryptKey))).replaceAll(" ", "0");
-            String cPrime2 = Avalanche.intArrayToBinString(AES.decrypt(ciphertext2, keyHex2), decryptKey);
+            String cPrime2 = DoubleAES.stateToString(AES.decrypt(ciphertext2, keyHex));
             cPrimeMap2.put(cPrime2, decryptKey);
         }
     }// meetInTheMiddle method
+
+
     
     /* This code is used for testing purposes.  This driver code
      * invokes the MIMT method repeatedly with numBits equal to 2,
