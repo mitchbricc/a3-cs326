@@ -30,10 +30,10 @@ class MITM extends BruteForce
         int maxKey = (int) Math.pow(2, numBits);
 
         // Precompute p1`
-        int[] pPrimes = new int[maxKey];
+        String[] pPrimes = new String[maxKey];
         for (int pKey = 0; pKey < maxKey; pKey++) {
             int[][] pPrime = AES.encrypt(plaintext1, String.valueOf(pKey));
-            pPrimes[pKey] = Integer.parseInt(stateToString(pPrime), 16);
+            pPrimes[pKey] = stateToString(pPrime);
         }
 
         HashMap<String,Integer> cPrimeMap1 = new HashMap<>();
