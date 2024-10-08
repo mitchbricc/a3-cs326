@@ -30,10 +30,15 @@ class MITM extends BruteForce
         int maxKey = (int) Math.pow(2, numBits);
 
         // Precompute p1`
-        String[] pPrimes = new String[maxKey];
+        String[] pPrimes1 = new String[maxKey];
+        String[] pPrimes2 = new String[maxKey];
         for (int pKey = 0; pKey < maxKey; pKey++) {
-            int[][] pPrime = AES.encrypt(plaintext1, String.valueOf(pKey));
-            pPrimes[pKey] = stateToString(pPrime);
+            String keyHex = String.format("%32s", binStringToHex(Integer.toBinaryString(pKey))).replaceAll(" ", "0");
+            int[][] pPrime1 = AES.encrypt(plaintext1, keyHex);
+            pPrimes1[pKey] = stateToString(pPrime1);
+
+            int[][] pPrime2 = AES.encrypt(plaintext2, keyHex);
+            pPrimes2[pKey] = stateToString(pPrime2);
         }
 
         HashMap<String,Integer> cPrimeMap1 = new HashMap<>();
@@ -41,11 +46,35 @@ class MITM extends BruteForce
         for (int decryptKey = 0; decryptKey < maxKey; decryptKey++) {
             String keyHex = String.format("%32s", binStringToHex(Integer.toBinaryString(decryptKey))).replaceAll(" ", "0");
             
-            String cPrime1 = DoubleAES.stateToString(AES.decrypt(ciphertext1, keyHex));
+            String cPrime1 = stateToString(AES.decrypt(ciphertext1, keyHex));
             cPrimeMap1.put(cPrime1, decryptKey);
 
-            String cPrime2 = DoubleAES.stateToString(AES.decrypt(ciphertext2, keyHex));
+            String cPrime2 = stateToString(AES.decrypt(ciphertext2, keyHex));
             cPrimeMap2.put(cPrime2, decryptKey);
+        }
+
+        int key1e = -1, key2e = -1;
+        int key1d = -1, key2d = -1;
+        for (int i = 0; i < pPrimes1.length; i++) {
+            if(cPrimeMap1.containsKey(pPrimes1[i])){
+                key1e = i;
+                key1d = cPrimeMap1.get(pPrimes1[i]);
+            }
+        }
+
+        for (int i = 0; i < pPrimes2.length; i++) {
+            if(cPrimeMap2.containsKey(pPrimes2[i])){
+                key2e = i;
+                key2d = cPrimeMap2.get(pPrimes2[i]);
+            }
+        }
+        if(key1e != -1 && key2e != -1 && key1e == key2e && key1d == key2d){
+            String key1Hex = String.format("%32s", binStringToHex(Integer.toBinaryString(key1e))).replaceAll(" ", "0");
+            String key2Hex = String.format("%32s", binStringToHex(Integer.toBinaryString(key2d))).replaceAll(" ", "0");
+            elapsedTime = System.currentTimeMillis() - startTime;
+            System.out.printf("%13s", "");
+            System.out.println(key1Hex + " " + key2Hex + " " + " time = " + (elapsedTime/1000.0) + "s");
+            return;
         }
     }// meetInTheMiddle method
 
