@@ -33,7 +33,9 @@ class MITM extends BruteForce
         String[] pPrimes1 = new String[maxKey];
         String[] pPrimes2 = new String[maxKey];
         for (int pKey = 0; pKey < maxKey; pKey++) {
-            String keyHex = String.format("%32s", binStringToHex(Integer.toBinaryString(pKey))).replaceAll(" ", "0");
+            String keyHex = String.format("%32s", 
+                binStringToHex(Integer.toBinaryString(pKey)))
+                    .replaceAll(" ", "0");
             int[][] pPrime1 = AES.encrypt(plaintext1, keyHex);
             pPrimes1[pKey] = stateToString(pPrime1);
 
@@ -44,7 +46,9 @@ class MITM extends BruteForce
         HashMap<String,Integer> cPrimeMap1 = new HashMap<>();
         HashMap<String,Integer> cPrimeMap2 = new HashMap<>();
         for (int decryptKey = 0; decryptKey < maxKey; decryptKey++) {
-            String keyHex = String.format("%32s", binStringToHex(Integer.toBinaryString(decryptKey))).replaceAll(" ", "0");
+            String keyHex = String.format("%32s", 
+                binStringToHex(Integer.toBinaryString(decryptKey)))
+                    .replaceAll(" ", "0");
             
             String cPrime1 = stateToString(AES.decrypt(ciphertext1, keyHex));
             cPrimeMap1.put(cPrime1, decryptKey);
@@ -69,11 +73,16 @@ class MITM extends BruteForce
             }
         }
         if(key1e != -1 && key2e != -1 && key1e == key2e && key1d == key2d){
-            String key1Hex = String.format("%32s", binStringToHex(Integer.toBinaryString(key1e))).replaceAll(" ", "0");
-            String key2Hex = String.format("%32s", binStringToHex(Integer.toBinaryString(key2d))).replaceAll(" ", "0");
+            String key1Hex = String.format("%32s", 
+                binStringToHex(Integer.toBinaryString(key1e)))
+                    .replaceAll(" ", "0");
+            String key2Hex = String.format("%32s", 
+                binStringToHex(Integer.toBinaryString(key2d)))
+                    .replaceAll(" ", "0");
             elapsedTime = System.currentTimeMillis() - startTime;
             System.out.printf("%13s", "");
-            System.out.println(key1Hex + " " + key2Hex + " " + " time = " + (elapsedTime/1000.0) + "s");
+            System.out.println(key1Hex + " " + key2Hex + " " + 
+                " time = " + (elapsedTime/1000.0) + "s");
             return;
         }
     }// meetInTheMiddle method
