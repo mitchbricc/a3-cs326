@@ -36,16 +36,6 @@ class MITM extends BruteForce
             pPrimes[pKey] = Integer.parseInt(stateToString(pPrime), 16);
         }
 
-        int maxKey = (int) Math.pow(2, numBits);
-        
-
-
-
-
-
-
-
-
         HashMap<String,Integer> cPrimeMap1 = new HashMap<>();
         HashMap<String,Integer> cPrimeMap2 = new HashMap<>();
         for (int decryptKey = 0; decryptKey < maxKey; decryptKey++) {
