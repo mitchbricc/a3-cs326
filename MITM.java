@@ -28,6 +28,15 @@ class MITM extends BruteForce
         startTime = System.currentTimeMillis();
 
         int maxKey = (int) Math.pow(2, numBits);
+
+        // Precompute p1`
+        int[] pPrimes = new int[maxKey];
+        for (int pKey = 0; pKey < maxKey; pKey++) {
+            int[][] pPrime = AES.encrypt(plaintext1, String.valueOf(pKey));
+            pPrimes[pKey] = Integer.parseInt(stateToString(pPrime), 16);
+        }
+
+        int maxKey = (int) Math.pow(2, numBits);
         
 
 
